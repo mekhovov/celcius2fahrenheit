@@ -1,0 +1,122 @@
+metric_fu shift the first line
+================================================================================
+ ./app/convertor.rb
+================================================================================
+   require './app/convertor_strategy'
+   
+   class Convertor
+     def initialize(value, convertor)
+       raise ArgumentError unless convertor.respond_to?(:process)
+       
+       @convertor = convertor
+       @value = value
+     end
+   
+     def converted_value
+       @converted_value ||= @convertor.process(@value)
+     end
+   end
+
+================================================================================
+ ./app/convertor_strategy.rb
+================================================================================
+   class ConvertorStrategy
+     attr_reader :reverse
+   
+     def initialize(reverse=false)
+       @reverse = reverse
+     end
+   
+     def process(value)
+       raise NotImplementedError
+     end
+   end
+   
+   class CelsiusToFahrenheitConvertor < ConvertorStrategy
+     def process(value)
+       return reverse_process(value) if reverse
+   
+       1.8 * value + 32
+     end
+   
+     def reverse_process(value)
+       (value - 32) / 1.8
+     end
+   end
+   
+   class MetersToFeetConvertor < ConvertorStrategy
+     def process(value)
+       return reverse_process(value) if reverse
+   
+       3.28 * value
+     end
+   
+     def reverse_process(value)
+       value / 3.28
+     end
+   end
+
+================================================================================
+ ./spec/convertor_strategy_spec.rb
+================================================================================
+   require './app/convertor_strategy'
+   
+   describe ConvertorStrategy do
+     it "should define inteface process method" do
+       ConvertorStrategy.new.should respond_to(:process)
+     end
+   
+     it "should raise exception on trying to call template method" do
+       proc{ ConvertorStrategy.new.process(1) }.should raise_exception(NotImplementedError)
+     end
+   
+     it "should not be reverse by default" do
+       ConvertorStrategy.new.reverse.should be_false
+     end
+     
+     describe CelsiusToFahrenheitConvertor do
+       describe "#process" do
+         celsius_fahrenheits = {-10 => 14, 0 => 32, 10 => 50, 15 => 59, 100 => 212}
+   
+         context "forward conversion" do
+           celsius_fahrenheits.each_pair do |celsius, fahrenheits|
+             it "should return #{fahrenheits} fahrenheits for #{celsius} celsius" do
+               CelsiusToFahrenheitConvertor.new.process(celsius).should be_eql(fahrenheits.to_f)
+             end
+           end
+         end
+   
+         context "reverse conversion" do
+           celsius_fahrenheits.each_pair do |celsius, fahrenheits|
+             it "should return #{celsius} celsius for #{fahrenheits} fahrenheits" do
+               CelsiusToFahrenheitConvertor.new(true).process(fahrenheits).should be_eql(celsius.to_f)
+             end
+           end
+         end
+       end
+     end
+   
+   
+     describe MetersToFeetConvertor do
+       describe "#process" do
+         meters_feet = {10 => 32.8, 0 => 0, 15 => 49.2, 90 => 295.2}
+   
+         context "forward conversion" do
+           meters_feet.each_pair do |meters, feet|
+             it "should return #{feet} feet for #{meters} meters" do
+               MetersToFeetConvertor.new.process(meters).should be_within(0.1).of(feet)
+             end
+           end
+         end
+   
+         context "reverse conversion" do
+           meters_feet.each_pair do |meters, feet|
+             it "should return #{meters} meters for #{feet} feet" do
+               MetersToFeetConvertor.new(true).process(feet).should be_within(0.1).of(meters)
+             end
+           end
+         end
+       end
+     end
+   end
+

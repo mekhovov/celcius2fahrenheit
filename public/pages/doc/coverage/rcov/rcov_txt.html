@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>rcov - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body class="file">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="../../coverage/rcov/rcov_txt.html">rcov</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../CelsiusToFahrenheitConvertor.html">CelsiusToFahrenheitConvertor</a>
+  
+    <li><a href="../../Convertor.html">Convertor</a>
+  
+    <li><a href="../../ConvertorStrategy.html">ConvertorStrategy</a>
+  
+    <li><a href="../../MetersToFeetConvertor.html">MetersToFeetConvertor</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  
+<p>metric_fu shift the first line</p>
+
+<h6 id="label-"></h6>
+
+<pre>./app/convertor.rb</pre>
+
+<h6 id="label-"></h6>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'./app/convertor_strategy'</span>
+
+<span class="ruby-keyword">class</span> <span class="ruby-constant">Convertor</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">convertor</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">convertor</span>.<span class="ruby-identifier">respond_to?</span>(:<span class="ruby-identifier">process</span>)
+
+    <span class="ruby-ivar">@convertor</span> = <span class="ruby-identifier">convertor</span>
+    <span class="ruby-ivar">@value</span> = <span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">converted_value</span>
+    <span class="ruby-ivar">@converted_value</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@convertor</span>.<span class="ruby-identifier">process</span>(<span class="ruby-ivar">@value</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<h6 id="label-"></h6>
+
+<pre>./app/convertor_strategy.rb</pre>
+
+<h6 id="label-"></h6>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">ConvertorStrategy</span>
+  <span class="ruby-identifier">attr_reader</span> :<span class="ruby-identifier">reverse</span>
+
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">reverse</span>=<span class="ruby-keyword">false</span>)
+    <span class="ruby-ivar">@reverse</span> = <span class="ruby-identifier">reverse</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span>(<span class="ruby-identifier">value</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">class</span> <span class="ruby-constant">CelsiusToFahrenheitConvertor</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">ConvertorStrategy</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span>(<span class="ruby-identifier">value</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">reverse_process</span>(<span class="ruby-identifier">value</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">reverse</span>
+
+    <span class="ruby-value">1.8</span> * <span class="ruby-identifier">value</span> <span class="ruby-operator">+</span> <span class="ruby-value">32</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">reverse_process</span>(<span class="ruby-identifier">value</span>)
+    (<span class="ruby-identifier">value</span> <span class="ruby-operator">-</span> <span class="ruby-value">32</span>) <span class="ruby-operator">/</span> <span class="ruby-value">1.8</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">class</span> <span class="ruby-constant">MetersToFeetConvertor</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">ConvertorStrategy</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span>(<span class="ruby-identifier">value</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">reverse_process</span>(<span class="ruby-identifier">value</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">reverse</span>
+
+    <span class="ruby-value">3.28</span> * <span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">reverse_process</span>(<span class="ruby-identifier">value</span>)
+    <span class="ruby-identifier">value</span> <span class="ruby-operator">/</span> <span class="ruby-value">3.28</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<h6 id="label-"></h6>
+
+<pre>./spec/convertor_strategy_spec.rb</pre>
+
+<h6 id="label-"></h6>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'./app/convertor_strategy'</span>
+
+<span class="ruby-identifier">describe</span> <span class="ruby-constant">ConvertorStrategy</span> <span class="ruby-keyword">do</span>
+  <span class="ruby-identifier">it</span> <span class="ruby-string">&quot;should define inteface process method&quot;</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">ConvertorStrategy</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">should</span> <span class="ruby-identifier">respond_to</span>(:<span class="ruby-identifier">process</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">it</span> <span class="ruby-string">&quot;should raise exception on trying to call template method&quot;</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">proc</span>{ <span class="ruby-constant">ConvertorStrategy</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">process</span>(<span class="ruby-value">1</span>) }.<span class="ruby-identifier">should</span> <span class="ruby-identifier">raise_exception</span>(<span class="ruby-constant">NotImplementedError</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">it</span> <span class="ruby-string">&quot;should not be reverse by default&quot;</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">ConvertorStrategy</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">should</span> <span class="ruby-identifier">be_false</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">describe</span> <span class="ruby-constant">CelsiusToFahrenheitConvertor</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">describe</span> <span class="ruby-node">&quot;#process&quot;</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">celsius_fahrenheits</span> = {<span class="ruby-value">-10</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">14</span>, <span class="ruby-value">0</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">32</span>, <span class="ruby-value">10</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">50</span>, <span class="ruby-value">15</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">59</span>, <span class="ruby-value">100</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">212</span>}
+
+      <span class="ruby-identifier">context</span> <span class="ruby-string">&quot;forward conversion&quot;</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">celsius_fahrenheits</span>.<span class="ruby-identifier">each_pair</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">celsius</span>, <span class="ruby-identifier">fahrenheits</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">it</span> <span class="ruby-node">&quot;should return #{fahrenheits} fahrenheits for #{celsius} celsius&quot;</span> <span class="ruby-keyword">do</span>
+            <span class="ruby-constant">CelsiusToFahrenheitConvertor</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">process</span>(<span class="ruby-identifier">celsius</span>).<span class="ruby-identifier">should</span> <span class="ruby-identifier">be_eql</span>(<span class="ruby-identifier">fahrenheits</span>.<span class="ruby-identifier">to_f</span>)
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-identifier">context</span> <span class="ruby-string">&quot;reverse conversion&quot;</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">celsius_fahrenheits</span>.<span class="ruby-identifier">each_pair</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">celsius</span>, <span class="ruby-identifier">fahrenheits</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">it</span> <span class="ruby-node">&quot;should return #{celsius} celsius for #{fahrenheits} fahrenheits&quot;</span> <span class="ruby-keyword">do</span>
+            <span class="ruby-constant">CelsiusToFahrenheitConvertor</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">true</span>).<span class="ruby-identifier">process</span>(<span class="ruby-identifier">fahrenheits</span>).<span class="ruby-identifier">should</span> <span class="ruby-identifier">be_eql</span>(<span class="ruby-identifier">celsius</span>.<span class="ruby-identifier">to_f</span>)
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">describe</span> <span class="ruby-constant">MetersToFeetConvertor</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">describe</span> <span class="ruby-node">&quot;#process&quot;</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">meters_feet</span> = {<span class="ruby-value">10</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">32.8</span>, <span class="ruby-value">0</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>, <span class="ruby-value">15</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">49.2</span>, <span class="ruby-value">90</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">295.2</span>}
+
+      <span class="ruby-identifier">context</span> <span class="ruby-string">&quot;forward conversion&quot;</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">meters_feet</span>.<span class="ruby-identifier">each_pair</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">meters</span>, <span class="ruby-identifier">feet</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">it</span> <span class="ruby-node">&quot;should return #{feet} feet for #{meters} meters&quot;</span> <span class="ruby-keyword">do</span>
+            <span class="ruby-constant">MetersToFeetConvertor</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">process</span>(<span class="ruby-identifier">meters</span>).<span class="ruby-identifier">should</span> <span class="ruby-identifier">be_within</span>(<span class="ruby-value">0.1</span>).<span class="ruby-identifier">of</span>(<span class="ruby-identifier">feet</span>)
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-identifier">context</span> <span class="ruby-string">&quot;reverse conversion&quot;</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">meters_feet</span>.<span class="ruby-identifier">each_pair</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">meters</span>, <span class="ruby-identifier">feet</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">it</span> <span class="ruby-node">&quot;should return #{meters} meters for #{feet} feet&quot;</span> <span class="ruby-keyword">do</span>
+            <span class="ruby-constant">MetersToFeetConvertor</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">true</span>).<span class="ruby-identifier">process</span>(<span class="ruby-identifier">feet</span>).<span class="ruby-identifier">should</span> <span class="ruby-identifier">be_within</span>(<span class="ruby-value">0.1</span>).<span class="ruby-identifier">of</span>(<span class="ruby-identifier">meters</span>)
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+</div>
+
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

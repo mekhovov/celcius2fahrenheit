@@ -1,0 +1,45 @@
+---
+:cane:
+  :total_violations: 10
+  :violations:
+    :line_style:
+    - :line: app/convertor.rb:8
+      :description: Line contains trailing whitespace
+    - :line: spec/convertor_spec.rb:13
+      :description: Line is >80 characters (93)
+    - :line: spec/convertor_strategy_spec.rb:12
+      :description: Line is >80 characters (88)
+    - :line: spec/convertor_strategy_spec.rb:18
+      :description: Line contains trailing whitespace
+    - :line: spec/convertor_strategy_spec.rb:25
+      :description: Line is >80 characters (81)
+    - :line: spec/convertor_strategy_spec.rb:26
+      :description: Line is >80 characters (93)
+    - :line: spec/convertor_strategy_spec.rb:33
+      :description: Line is >80 characters (81)
+    - :line: spec/convertor_strategy_spec.rb:34
+      :description: Line is >80 characters (99)
+    - :line: spec/convertor_strategy_spec.rb:49
+      :description: Line is >80 characters (84)
+    - :line: spec/convertor_strategy_spec.rb:57
+      :description: Line is >80 characters (90)
+:churn: {}
+:flay:
+  :total_score: '0'
+  :matches: []
+:flog:
+  :total: 0
+  :average: 0
+  :method_containers: []
+:roodi:
+  :total:
+  - Found 0 errors.
+  :problems: []
+:saikuro:
+  :files: []
+  :classes: []
+  :methods: []
+:hotspots:
+  :files: []
+  :classes: []
+  :methods: []
