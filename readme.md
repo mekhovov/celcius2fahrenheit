@@ -41,4 +41,8 @@ What included:
 
         reek
 
+*   Rails Best Practices
+
+        rails_best_practices -f html .
+
 
