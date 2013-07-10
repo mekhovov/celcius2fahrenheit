@@ -775,8 +775,12 @@ ul#icons span.ui-icon {
     margin-bottom: 20px;
 }
 /*slider*/
-#c-amount, #f-amount{
+#c-amount, #f-amount {
     color:#f6931f; 
+    font-weight:bold;
+}
+ #m-amount, #ft-amount{
+    color:green; 
     font-weight:bold;
 }
 #h-slider,#v-slider{
@@ -808,4 +812,8 @@ ul#icons span.ui-icon {
 
 .value {
     margin-top: -15px;
+}
+
+#meters_to_feet .ui-slider .ui-slider-range {
+  background: green;
 }
