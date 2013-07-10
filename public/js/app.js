@@ -74,8 +74,8 @@ $(function () {
     $("#c-amount").html($("#c-slider").slider("value"));
     $("#f-amount").html($("#f-slider").slider("value"));
 
-    render_meters_slider(10);
-    render_feet_slider(32.8);
+    render_meters_slider(52);
+    render_feet_slider(171);
     $("#m-amount").html($("#m-slider").slider("value"));
     $("#ft-amount").html($("#ft-slider").slider("value"));
 
