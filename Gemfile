@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # app
-gem 'sinatra'
+gem 'sinatra', '1.3.3'
 
 # tests
 gem 'rspec'
