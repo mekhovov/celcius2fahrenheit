@@ -42,3 +42,9 @@ get '/feet_to_meters' do
     :feet => params[:value].to_f
   }.to_json
 end
+
+# Convert Bank Coding to Regex
+get '/bank_coding_to_regex' do
+  regex = Convertor.new(params[:value], BankCodingToRegexConvertor.new())
+  regex.converted_value
+end

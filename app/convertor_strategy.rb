@@ -43,3 +43,24 @@ class MetersToFeetConvertor < ConvertorStrategy
     value / 3.28
   end
 end
+
+# Bank Coding to Regex
+class BankCodingToRegexConvertor < ConvertorStrategy
+  TRANSFORMS = {
+    'n' => '\d',
+    'a' => '[A-Z]',
+    'c' => '[a-zA-Z0-9]',
+    'e' => '\s'
+  }
+  def process(registry)
+    begin
+      regex = registry.gsub(/\A[A-Z]{2}/,'\A[A-Z]{2}').   #country code
+            gsub(/(\d+)!([nace])/, '\2{\1}').   #fixed length(nn!)
+            gsub(/(\d+)([nace])/, '\2{1,\1}').  #maximum length(nn)
+            gsub(/[nace]/, TRANSFORMS)
+    rescue
+      return "Beer!"
+    end
+    return "/#{regex}/"
+  end
+end
